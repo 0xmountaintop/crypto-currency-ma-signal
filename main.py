@@ -3,6 +3,8 @@
 import settings
 import urllib2
 import json
+import time
+import threading
 
 # https://github.com/python-telegram-bot/python-telegram-bot/wiki/Introduction-to-the-API
 # https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/timerbot.py
@@ -19,6 +21,9 @@ import json
 
 
 def main():
+    now = int(time.time())
+    print "now: %s, %s" % (now, time.ctime(now))
+
     for coin in settings.coin:
         kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=200&format_type=all" % (settings.exchange, coin)
         print "getting data from: ", kline_url
@@ -29,7 +34,9 @@ def main():
         for d in data:
             print d["date"], d["close"]
             break
+    print ""
+    time.sleep(60*60)
 
 if __name__ == "__main__":
-    main()
-
+    while True:
+        main()
