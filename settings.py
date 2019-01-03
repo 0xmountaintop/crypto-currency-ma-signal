@@ -1,2 +1,2 @@
 exchange = "gate" # okcoincom, okex, binance, huobipro
-coin = ["eos", "eth"]
+coins = ["eos", "eth"]
