@@ -4,6 +4,9 @@ import settings
 import urllib2
 import json
 
+# https://github.com/python-telegram-bot/python-telegram-bot/wiki/Introduction-to-the-API
+# https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/timerbot.py
+
 # https://marketapi.blockmeta.com/apidocs/#/
 # curl -X GET "https://marketapi.blockmeta.com/flash/ticker?symbols=huobipro-btc_usd" -H "accept: application/json"
 
