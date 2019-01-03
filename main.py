@@ -16,14 +16,16 @@ import json
 
 
 def main():
-    kline_url = "https://marketapi.blockmeta.com/kline/%s/eth_usd/1hour?count=200&format_type=all" % settings.exchange
-    print "getting data from: ", kline_url
-    contents = urllib2.urlopen(kline_url).read()
-    # print "raw_data:\n", contents
-    data = json.loads(contents)
-    # print len(data)
-    for d in data:
-        print d["date"], d["close"]
+    for coin in settings.coin:
+        kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=200&format_type=all" % (settings.exchange, coin)
+        print "getting data from: ", kline_url
+        contents = urllib2.urlopen(kline_url).read()
+        # print "raw_data:\n", contents
+        data = json.loads(contents)
+        # print len(data)
+        for d in data:
+            print d["date"], d["close"]
+            break
 
 if __name__ == "__main__":
     main()
