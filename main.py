@@ -47,7 +47,16 @@ def main():
                 mas[ma_name] = ma
 
             # calc EMA
-
+            for i in range(len(sample_nums)):
+                sample_num = sample_nums[i]
+                samples = data[0:sample_num][::-1] # ASC
+                # alpha = 2/(sample_num+1)
+                alpha = 1/sample_num
+                ema = samples[0]["close"]
+                for i in xrange(1,sample_num):
+                    ema = alpha * samples[i]["close"] + (1-alpha) * ema
+                ema_name = "ema%d" % sample_num
+                mas[ema_name] = ema
 
             # make decision
             up_cnt = 0
@@ -65,8 +74,8 @@ def main():
             print ""
         print "sleep for 1h"
         time.sleep(60*60)
-    except:
-        print "network error\n"
+    except Exception as e:
+            print "Error:", e
 
 if __name__ == "__main__":
     while True:

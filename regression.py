@@ -57,8 +57,8 @@ def main(regr_time):
         if down_cnt > len(mas)*0.75:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
         return True
-    except:
-        print "network error"
+    except Exception as e:
+        print "Error:", e
         return False
 
 if __name__ == "__main__":
