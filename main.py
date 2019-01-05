@@ -6,60 +6,47 @@ import json
 import time
 import threading
 
-# https://github.com/python-telegram-bot/python-telegram-bot/wiki/Introduction-to-the-API
-# https://github.com/python-telegram-bot/python-telegram-bot/blob/master/examples/timerbot.py
-
-# https://marketapi.blockmeta.com/apidocs/#/
-
-# 5
-# 10
-# 20
-# 50
-# 100
-# 200
-
-# [
-#     {
-#         "open": 132.05,
-#         "high": 133.39,
-#         "low": 131.09,
-#         "close": 132.79,
-#         "vol": 3228.0352636033,
-#         "date": 1545800400
-#     }
-# ]
-
-# use kline to huice 
-
+num = [5, 10, 20, 50, 100, 200] # in ASC order
 
 def main():
     now = int(time.time())
+    print "--------------------------------------"
     print "now: %s, %s\n" % (now, time.ctime(now))
 
-    for coin in settings.coins:
-        print "processing", coin
-        
-        price_url = "https://marketapi.blockmeta.com/flash/ticker?symbols=%s-%s_usd" % (settings.exchange, coin)
-        print "getting price from: ", price_url
-        contents = urllib2.urlopen(price_url).read()
-        data = json.loads(contents)
-        print data["tickers"][0]["ticker"]["last"]
+    try:
+        for coin in settings.coins:
+            print "processing", coin
+            
+            price_url = "https://marketapi.blockmeta.com/flash/ticker?symbols=%s-%s_usd" % (settings.exchange, coin)
+            print "getting price from: ", price_url
+            contents = urllib2.urlopen(price_url).read()
+            data = json.loads(contents)
+            print data["tickers"][0]["ticker"]["last"]
 
-        kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=200&format_type=all" % (settings.exchange, coin)
-        print "getting klines from: ", kline_url
-        contents = urllib2.urlopen(kline_url).read()
-        # print "raw_data:\n", contents
-        data = json.loads(contents)
-        # print len(data)
-        for d in data:
-            print d["date"], d["close"]
-            break
+            kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all" % (settings.exchange, coin, max(num))
+            print "getting klines from: ", kline_url
+            contents = urllib2.urlopen(kline_url).read()
+            # print "raw_data:\n", contents
+            data = json.loads(contents)
+            data = data[::-1] # date DESC
+            # print len(data)
+            # for d in data:
+            #     print d["date"], d["close"]
 
-        print ""
+            # calc MA
+            for i in range(len(num)):
+                ma = 0
+                for j in range(num[i]):
+                    ma += data[j]["close"]
+                ma /= num[i]
+                print "ma%d: %f" % (num[i], ma)
 
-    time.sleep(60*60) # sleep for 1h
+            # calc EMA
 
-
+            print ""
+        time.sleep(60*60) # sleep for 1h
+    except:
+        print "network error\n"
 
 if __name__ == "__main__":
     while True:
