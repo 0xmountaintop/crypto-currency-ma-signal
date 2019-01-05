@@ -82,10 +82,8 @@ def main(regr_time, file):
 if __name__ == "__main__": 
     print "Regression for", coin
     regr_time = settings.regr_start_timestamp
-    filename = "regression_" + coin + "_" + str(regr_time) + "_.log"
+    filename = "regression_" + coin + "_" + str(regr_time) + ".log"
     file = open(filename, "w")
-    file.write("Start from " + time.ctime(regr_time))
-    file.write("\n----------------------------------------\n")
     file.flush()
     now = int(time.time())
     while regr_time <= now:
