@@ -7,7 +7,7 @@ import time
 import threading
 
 sample_nums = [5, 10, 20, 50, 100, 200] # in ASC order
-coin = "eth"
+coin = settings.regr_coin
 
 def main(regr_time, file):
     print "--------------------------"
@@ -66,20 +66,20 @@ def main(regr_time, file):
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": BUY at "+ str(regr_price) + "\n")
             file.flush()
-
         if down_cnt > len(mas)*0.75:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": SELL at "+ str(regr_price) + "\n")
             file.flush()
 
         return True
+
     except Exception as e:
         print "Error:", e
         return False
 
 if __name__ == "__main__": 
     print "Regression for", coin
-    regr_time = 1530374470 # July 1, 2018 12:01:00 AM GMT+08:00
+    regr_time = settings.regr_start_timestamp
     filename = "regression_" + coin + "_" + str(regr_time) + "_.log"
     file = open(filename, "w")
     file.write("Start from " + time.ctime(regr_time))
