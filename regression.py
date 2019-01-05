@@ -9,7 +9,7 @@ import threading
 sample_nums = [5, 10, 20, 50, 100, 200] # in ASC order
 coin = "eth"
 
-def main(regr_time):
+def main(regr_time, file):
     print "--------------------------"
     print time.ctime(regr_time)
     print "--------------------------"
@@ -64,18 +64,37 @@ def main(regr_time):
         print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
         if up_cnt > len(mas)*0.75:
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
+            file.write("~~~~~~~~~~~~~~~~~~~~\n")
+            file.write(time.ctime(regr_time))
+            file.write("\nBUY\n")
+            file.write(regr_price)
+            file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
+            file.flush()
+
         if down_cnt > len(mas)*0.75:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
-            
+            file.write("~~~~~~~~~~~~~~~~~~~~\n")
+            file.write(time.ctime(regr_time))
+            file.write("\nSELL\n")
+            file.write(regr_price)
+            file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
+            file.flush()
+
         return True
     except Exception as e:
         print "Error:", e
         return False
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     print "Regression for", coin
     regr_time = 1530374470 # July 1, 2018 12:01:00 AM GMT+08:00
+    filename = "regression_" + coin + ".log"
+    file = open(filename, "w")
+    file.write(time.ctime(regr_time))
+    file.write("\n--------------------\n")
+    file.flush()
     now = int(time.time())
     while regr_time <= now:
-        if main(regr_time):
+        if main(regr_time, file):
             regr_time += 60*60 # move forward 1h
+    file.close()
