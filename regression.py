@@ -8,31 +8,27 @@ import threading
 
 sample_nums = [5, 10, 20, 50, 100, 200] # in ASC order
 
-def main():
-    now = int(time.time())
-    print "--------------------------------------"
-    print "now: %s, %s\n" % (now, time.ctime(now))
-
+def main(regr_time):
+    print "--------------------------"
+    print time.ctime(regr_time)
+    print "--------------------------"
+    
     try:
         for coin in settings.coins:
             print "processing", coin
             
-            price_url = "https://marketapi.blockmeta.com/flash/ticker?symbols=%s-%s_usd" % (settings.exchange, coin)
+            price_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1min?count=%d&format_type=all&end_time=%d" % (settings.exchange, coin, 1, regr_time)
             print "getting price from:", price_url
             contents = urllib2.urlopen(price_url).read()
             data = json.loads(contents)
-            current_price = data["tickers"][0]["ticker"]["last"]
-            print current_price
+            regr_price = data[0]["close"]
+            print regr_price
 
-            kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all" % (settings.exchange, coin, max(sample_nums))
+            kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all&end_time=%d" % (settings.exchange, coin, max(sample_nums), regr_time)
             print "getting klines from:", kline_url
             contents = urllib2.urlopen(kline_url).read()
-            # print "raw_data:\n", contents
             data = json.loads(contents)
             data = data[::-1] # date DESC
-            # print len(data)
-            # for d in data:
-            #     print d["date"], d["close"]
 
             mas = {}
 
@@ -53,21 +49,25 @@ def main():
             up_cnt = 0
             down_cnt = 0
             for ma_name in mas:
-                print ma_name, mas[ma_name]
-                if current_price > mas[ma_name]:
+                if regr_price > mas[ma_name]:
                     up_cnt += 1
-                if current_price < mas[ma_name]:
+                if regr_price < mas[ma_name]:
                     down_cnt += 1
+            print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
             if up_cnt > len(mas)*0.75:
-                print "BUY BUY BUY %s at price: %f" % (coin, current_price)
+                print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             if down_cnt > len(mas)*0.75:
-                print "SELL SELL SELL %s at price: %f" % (coin, current_price)
+                print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             print ""
-        print "sleep for 1h"
-        time.sleep(60*60)
+        return True
     except:
         print "network error\n"
+        return False
 
 if __name__ == "__main__":
-    while True:
-        main()
+    regr_time = 1543593660 # Saturday, December 1, 2018 12:01:00 AM GMT+08:00
+    # regr_time = 1527782460 # Friday, June 1, 2018 12:01:00 AM GMT+08:00
+    now = int(time.time())
+    while regr_time <= now:
+        if main(regr_time):
+            regr_time += 60*60 # move forward 1h
