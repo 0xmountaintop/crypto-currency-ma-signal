@@ -44,11 +44,24 @@ def main():
                     ma += data[j]["close"]
                 ma /= sample_num
                 ma_name = "ma%d" % sample_num
-                print ma_name, ma
                 mas[ma_name] = ma
 
             # calc EMA
 
+
+            # make decision
+            up_cnt = 0
+            down_cnt = 0
+            for ma_name in mas:
+                print ma_name, mas[ma_name]
+                if current_price > mas[ma_name]:
+                    up_cnt += 1
+                if current_price < mas[ma_name]:
+                    down_cnt += 1
+            if up_cnt > len(mas)*0.75:
+                print "BUY BUY BUY %s at price: %f" % (coin, current_price)
+            if down_cnt > len(mas)*0.75:
+                print "SELL SELL SELL %s at price: %f" % (coin, current_price)
             print ""
         print "sleep for 1h"
         time.sleep(60*60)
