@@ -72,6 +72,7 @@ def main():
                 print "BUY BUY BUY %s at price: %f" % (coin, current_price)
             if down_cnt > len(mas)*0.75:
                 print "SELL SELL SELL %s at price: %f" % (coin, current_price)
+                
             print ""
         print "sleep for 1h"
         time.sleep(60*60)

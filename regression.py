@@ -66,6 +66,7 @@ def main(regr_time):
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
         if down_cnt > len(mas)*0.75:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
+            
         return True
     except Exception as e:
         print "Error:", e
