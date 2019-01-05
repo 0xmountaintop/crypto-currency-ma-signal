@@ -90,7 +90,7 @@ if __name__ == "__main__":
     regr_time = 1530374470 # July 1, 2018 12:01:00 AM GMT+08:00
     filename = "regression_" + coin + "_" + str(regr_time) + "_.log"
     file = open(filename, "w")
-    file.write("Start from\n")
+    file.write("Start from")
     file.write(time.ctime(regr_time))
     file.write("\n--------------------\n")
     file.flush()
