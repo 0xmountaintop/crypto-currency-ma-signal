@@ -38,11 +38,12 @@ def main():
 
             # calc MA
             for i in range(len(sample_nums)):
+                sample_num = sample_nums[i]
                 ma = 0
-                for j in range(sample_nums[i]):
+                for j in range(sample_num):
                     ma += data[j]["close"]
-                ma /= sample_nums[i]
-                ma_name = "ma%d" % sample_nums[i]
+                ma /= sample_num
+                ma_name = "ma%d" % sample_num
                 print ma_name, ma
                 mas[ma_name] = ma
 
