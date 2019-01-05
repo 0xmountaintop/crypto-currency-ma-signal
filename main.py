@@ -6,7 +6,7 @@ import json
 import time
 import threading
 
-num = [5, 10, 20, 50, 100, 200] # in ASC order
+sample_nums = [5, 10, 20, 50, 100, 200] # in ASC order
 
 def main():
     now = int(time.time())
@@ -21,9 +21,10 @@ def main():
             print "getting price from: ", price_url
             contents = urllib2.urlopen(price_url).read()
             data = json.loads(contents)
-            print data["tickers"][0]["ticker"]["last"]
+            current_price = data["tickers"][0]["ticker"]["last"]
+            print current_price
 
-            kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all" % (settings.exchange, coin, max(num))
+            kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all" % (settings.exchange, coin, max(sample_nums))
             print "getting klines from: ", kline_url
             contents = urllib2.urlopen(kline_url).read()
             # print "raw_data:\n", contents
@@ -33,18 +34,23 @@ def main():
             # for d in data:
             #     print d["date"], d["close"]
 
+            mas = {}
+
             # calc MA
-            for i in range(len(num)):
+            for i in range(len(sample_nums)):
                 ma = 0
-                for j in range(num[i]):
+                for j in range(sample_nums[i]):
                     ma += data[j]["close"]
-                ma /= num[i]
-                print "ma%d: %f" % (num[i], ma)
+                ma /= sample_nums[i]
+                ma_name = "ma%d" % sample_nums[i]
+                print ma_name, ma
+                mas[ma_name] = ma
 
             # calc EMA
 
             print ""
-        time.sleep(60*60) # sleep for 1h
+        print "sleep for 1h"
+        time.sleep(60*60)
     except:
         print "network error\n"
 
