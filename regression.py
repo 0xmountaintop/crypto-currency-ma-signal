@@ -64,20 +64,12 @@ def main(regr_time, file):
         print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
         if up_cnt > len(mas)*0.75:
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
-            file.write("~~~~~~~~~~~~~~~~~~~~\n")
-            file.write(time.ctime(regr_time))
-            file.write("\nBUY\n")
-            file.write(str(regr_price))
-            file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
+            file.write(time.ctime(regr_time) + ": BUY at "+ str(regr_price) + "\n")
             file.flush()
 
         if down_cnt > len(mas)*0.75:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
-            file.write("~~~~~~~~~~~~~~~~~~~~\n")
-            file.write(time.ctime(regr_time))
-            file.write("\nSELL\n")
-            file.write(str(regr_price))
-            file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
+            file.write(time.ctime(regr_time) + ": SELL at "+ str(regr_price) + "\n")
             file.flush()
 
         return True
@@ -90,9 +82,8 @@ if __name__ == "__main__":
     regr_time = 1530374470 # July 1, 2018 12:01:00 AM GMT+08:00
     filename = "regression_" + coin + "_" + str(regr_time) + "_.log"
     file = open(filename, "w")
-    file.write("Start from")
-    file.write(time.ctime(regr_time))
-    file.write("\n--------------------\n")
+    file.write("Start from " + time.ctime(regr_time))
+    file.write("\n----------------------------------------\n")
     file.flush()
     now = int(time.time())
     while regr_time <= now:
