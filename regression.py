@@ -67,7 +67,7 @@ def main(regr_time, file):
             file.write("~~~~~~~~~~~~~~~~~~~~\n")
             file.write(time.ctime(regr_time))
             file.write("\nBUY\n")
-            file.write(regr_price)
+            file.write(str(regr_price))
             file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
             file.flush()
 
@@ -76,7 +76,7 @@ def main(regr_time, file):
             file.write("~~~~~~~~~~~~~~~~~~~~\n")
             file.write(time.ctime(regr_time))
             file.write("\nSELL\n")
-            file.write(regr_price)
+            file.write(str(regr_price))
             file.write("\n~~~~~~~~~~~~~~~~~~~~\n")
             file.flush()
 
@@ -88,8 +88,9 @@ def main(regr_time, file):
 if __name__ == "__main__": 
     print "Regression for", coin
     regr_time = 1530374470 # July 1, 2018 12:01:00 AM GMT+08:00
-    filename = "regression_" + coin + ".log"
+    filename = "regression_" + coin + "_" + str(regr_time) + "_.log"
     file = open(filename, "w")
+    file.write("Start from\n")
     file.write(time.ctime(regr_time))
     file.write("\n--------------------\n")
     file.flush()
