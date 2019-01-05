@@ -21,6 +21,8 @@ def main(regr_time, file):
         data = json.loads(contents)
         regr_price = data[0]["close"]
         print regr_price
+        file.write(time.ctime(regr_time) + ": regression_price "+ str(regr_price) + "\n")
+        file.flush()
 
         kline_url = "https://marketapi.blockmeta.com/kline/%s/%s_usd/1hour?count=%d&format_type=all&end_time=%d" % (settings.exchange, coin, max(sample_nums), regr_time)
         print "getting klines from:", kline_url
