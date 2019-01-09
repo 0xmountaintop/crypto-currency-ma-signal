@@ -46,8 +46,10 @@ def main(regr_time, file):
         for i in range(len(sample_nums)):
             sample_num = sample_nums[i]
             samples = data[0:sample_num][::-1] # ASC
-            # alpha = 2/(sample_num+1)
-            alpha = 1/sample_num
+            if settings.sensitive:
+                alpha = 2/(sample_num+1)
+            else:
+                alpha = 1/sample_num
             ema = samples[0]["close"]
             for i in xrange(1,sample_num):
                 ema = alpha * samples[i]["close"] + (1-alpha) * ema
