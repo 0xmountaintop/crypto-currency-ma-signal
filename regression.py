@@ -66,11 +66,11 @@ def main(regr_time, file):
             if regr_price < mas[ma_name]:
                 down_cnt += 1
         print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
-        if up_cnt > len(mas)*settings.strenth_threshold:
+        if up_cnt > len(mas)*settings.strength_threshold:
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": BUY at "+ str(regr_price) + "\n")
             file.flush()
-        if down_cnt > len(mas)*settings.strenth_threshold:
+        if down_cnt > len(mas)*settings.strength_threshold:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": SELL at "+ str(regr_price) + "\n")
             file.flush()
@@ -84,7 +84,7 @@ def main(regr_time, file):
 if __name__ == "__main__": 
     print "Regression for", coin
     regr_time = settings.regr_start_timestamp
-    filename = "regression_" + coin + "_" + str(regr_time) + ".log"
+    filename = "regression_" + coin + "_" + str(regr_time) + "_strength_" + str(settings.strength_threshold) + "_sensitive_" + str(settings.sensitive) + ".log"
     file = open(filename, "w")
     file.flush()
     now = int(time.time())
