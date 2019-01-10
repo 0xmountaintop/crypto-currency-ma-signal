@@ -66,11 +66,11 @@ def main(regr_time, file):
             if regr_price < mas[ma_name]:
                 down_cnt += 1
         print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
-        if up_cnt > len(mas)*0.75:
+        if up_cnt > len(mas)*settings.strenth_threshold:
             print "%s: BUY BUY BUY %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": BUY at "+ str(regr_price) + "\n")
             file.flush()
-        if down_cnt > len(mas)*0.75:
+        if down_cnt > len(mas)*settings.strenth_threshold:
             print "%s: SELL SELL SELL %s at price: %f" % (time.ctime(regr_time), coin, regr_price)
             file.write(time.ctime(regr_time) + ": SELL at "+ str(regr_price) + "\n")
             file.flush()

@@ -70,9 +70,9 @@ def main():
                 if current_price < mas[ma_name]:
                     down_cnt += 1
             print "up: %d/%d, down: %d/%d" % (up_cnt, len(mas), down_cnt, len(mas))
-            if up_cnt > len(mas)*0.75:
+            if up_cnt > len(mas)*settings.strenth_threshold:
                 print "BUY BUY BUY %s at price: %f" % (coin, current_price)
-            if down_cnt > len(mas)*0.75:
+            if down_cnt > len(mas)*settings.strenth_threshold:
                 print "SELL SELL SELL %s at price: %f" % (coin, current_price)
                 
             print ""
